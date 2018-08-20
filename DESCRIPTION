@@ -1,9 +1,20 @@
 Package: phdR2
-Title: What the Package Does (one line, title case)
+Title: Rscripts and Essential data For My Phd
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R: person("Juho", "Härme", email = "juho.harme@gmail.com", role = c("aut", "cre"))
+Description: 
+    The package includes the numeric data for my contrastive
+    linguistics phd. Also included are the essential scripts and functions used in
+    the analysis.
 Depends: R (>= 3.4.4)
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
+Suggests: 
+Imports:
+    bookdown,
+    dplyr,
+    ggplot2,
+    readr,
+    kableExtra,
+    stringi
