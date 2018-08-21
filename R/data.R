@@ -22,6 +22,15 @@
 "d"
 
 
+#' Pikku vektori helpottamaan kielien luuppaamista
+#' 
+#' Muodossa c("fi","ru")
+#'
+#' @format vector 
+#'
+#' 
+"langlist"
+
 
 #' Venäjän ja suomen SOV-lauseita koskeva numeerinen data.
 #'
@@ -66,7 +75,7 @@
 #'   \item{correct}{Onko parseri analysoinut oikein (T/F)}
 #'   ...
 #' }
-"parser_accuracy_test"
+"parser_accuracy_test_simple"
 
 
 

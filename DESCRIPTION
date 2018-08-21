@@ -13,8 +13,15 @@ LazyData: true
 Suggests: 
 Imports:
     bookdown,
+    coda,
     dplyr,
     ggplot2,
-    readr,
+    ggrepel,
+    grid,
+    gridExtra,
     kableExtra,
-    stringi
+    readr,
+    reshape,
+    stringi,
+    ggmcmc
+RoxygenNote: 6.0.1
