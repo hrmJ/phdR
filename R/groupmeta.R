@@ -34,7 +34,9 @@ GetGroupMetaTab <- function(gnames){
                `n/ru`,
                #`Morfologinen rakenne`=morph,
                ) %>%
-        kable(caption=cap, longtable=T, booktabs=T) 
+        kable(caption=cap, longtable=T, booktabs=T)  %>% 
+        kable_styling (full_width = T) %>% 
+        column_spec(1, width="1.2cm") 
 
 }
 

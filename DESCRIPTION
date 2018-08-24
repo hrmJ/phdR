@@ -15,6 +15,7 @@ Imports:
     bookdown,
     coda,
     dplyr,
+    gdata,
     ggplot2,
     ggrepel,
     grid,
