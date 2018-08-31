@@ -103,3 +103,52 @@ PrintGroupTable <- function(g, fi, ru){
         kable_styling(full_width=T)  %>% 
         column_spec(1, width="1.2cm") 
 }
+
+
+#' Oikopolku satunnaisotantataulukoihin
+#'
+#'
+#' @importFrom kableExtra kable kable_styling column_spec row_spec
+#' @importFrom dplyr  %>% select mutate case_when desc arrange
+#' @importFrom tidyr  spread
+#'
+#' @param input syötteenä oleva tibble
+#' @param cap taulukon otsikko
+#'
+#' @export
+
+PrintSampleTable <- function(input, cap){
+    if("cxg" %in% colnames(input)){
+        input <- input %>% rename(cx=cxg)
+    }
+    tab <- input %>% 
+        count(lang,cx) %>% 
+        spread(key="lang",value="n",fill=0) 
+    tab$n <- apply(tab,1,function(x){sum(as.integer(x[2:3]))})
+    tab %>% mutate(cx=case_when(
+                             cx == "affekt" ~ "affektiivinen konstruktio",
+                             cx == "alatop" ~ "alatopiikkikonstruktio",
+                             cx == "anaf" ~ "anaforinen konstruktio",
+                             cx == "kataf" ~ "kataforinen konstruktio",
+                             cx == "muu" ~ "ei luokiteltavissa",
+                             cx == "kontr" ~ "kontrastiivinen konstruktio",
+                             cx == "ei-temp" ~ "ei--temporaalinen вдруг-konstruktio",
+                             cx == "ei-temps" ~ "ei--temporaalinen silloin-konstruktio",
+                             cx == "määrä" ~ "määrää painottava konstruktio",
+                             cx == "sekv" ~ "anaforinen konstruktio",
+                             cx == "topik" ~ "topikaalinen konstruktio",
+                             cx == "top" ~ "topikaalinen konstruktio",
+                             cx == "fok" ~ "fokaalinen konstruktio",
+                             cx == "rtu" ~ "johdantokonstruktio",
+                             cx == "äkkiä" ~ "äkkiä-konstruktio",
+                             TRUE ~ cx
+                             ))  %>% 
+        arrange(desc(n)) %>% 
+        add_row(cx="Yht.",fi=sum(.$fi),ru=sum(.$ru),n=sum(fi,ru)) %>% 
+        setNames(c("Konstruktio","n / suomi","n / venäjä", "Yht.")) %>% 
+        kable(booktabs=T,longtable=T,caption=cap) %>% 
+        kable_styling (full_width = T) %>%
+        row_spec(nrow(tab), hline_after = T) %>% 
+        column_spec(1, width="9cm")
+}
+

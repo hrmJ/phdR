@@ -1,0 +1,20 @@
+sentid;web;p
+447548;http://formin.finland.fi/public/default.aspx?contentid=218130&nodeid=17384&contentlan=1&culture=fi-FI;8
+450150;http://www.ydinreaktioita.fi/energiapolitiikka/milta-maailman-energiatulevaisuus-nayttaa-fukushiman-jalkeen;1
+455328;https://www.parkinson.fi/artikkelit/tarkeinta-etsiminen-106;3
+433201;https://www.seurakuntalainen.fi/uutiset/oopperalaulaja-hengellisissa-lauluissa-on-jykevyytta/;1
+446245;?;0
+439707;http://www.ts.fi/uutiset/talous/611173/Finnairilla+yhteishanke+British+Airwaysin+ja+Japan+Airlinesin+kanssa;3
+458173;https://yle.fi/uutiset/3-7320031;8
+439454;https://yritysforum.com/2013/02/05/yritysten-lopettamissuma-pyyhkaisee-suomen-yli/;1
+442185;http://www.mm-hiihdot2017.fi/suunnistus/5374-tove-alexandersson-vuoden-suunnistaja-ruotsissa;2
+435171;fail;0
+439789;Araneum:selvää;3
+434949;http://www.vakkamedia.fi/040302a.htm;ei kappaleen eka
+448430;selvää;ei eka
+453766;selvä;ei eka
+430257;https://www.is.fi/taloussanomat/art-2000001784607.html;3
+450434;http://ella.juls.savba.sk/aranea/run.cgi/first?iquery=porvoolainen+vapaaottelija+Marcus+V%C3%A4nttinen+takoi+uransa+merkitt%C3%A4vimm%C3%A4n+voiton+pys%C3%A4ytt%C3%A4en&corpname=AranFinn_b&corpus-search-form=true;1
+458851;http://ella.juls.savba.sk/aranea/run.cgi/first?corpname=AranFinn_b&reload=&iquery=Turun+NMKY+t%C3%A4ytti+120+vuotta&queryselector=iqueryrow&lemma=&lpos=&phrase=&word=&wpos=&char=&cql=&default_attr=word&fc_lemword_window_type=both&fc_lemword_wsize=5&fc_lemword=&fc_lemword_type=all&fc_pos_window_type=both&fc_pos_wsize=5&fc_pos_type=all&fsca_doc.did=&fsca_doc.url=&fsca_doc.wordcount=&fsca_doc.aref=&fsca_doc.t2ld=&fsca_doc.urldomain=&fsca_gap.chars=;1
+455207;http://blogi.professoriliitto.fi/jorma-virkkala/akateemisten-johtajien-palkkiot/;ei kappaleen eka
+450702;http://ses.fi/ajankohtaista/ajankohtainen/?tx_ttnews%5Bpointer%5D=47&tx_ttnews%5BbackPid%5D=206&tx_ttnews%5Btt_news%5D=41&cHash=f7f3194c316d67ce678fc9375e7e8c24;vika
