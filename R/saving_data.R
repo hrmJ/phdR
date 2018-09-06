@@ -272,6 +272,7 @@ GetL2Collocates <- function(){
     #L2data$noncolplot <- ggplot(noncolstats,aes(x=lang, y=pr, fill=repeated)) + geom_bar(stat="identity") + facet_wrap(~ group) + theme_bw() + scale_fill_grey(start = 0.3, end = .7) 
 
     save(L2data, file="~/workprojects/phdR2/data/L2data.rda")
+    return(L2data)
 }
 
 #' Hakee monia l1a-aineistoon ja keskisijaintiin liittyviä tietoja erityisesti koskien ns. julkaisu- / luomisverbejä
