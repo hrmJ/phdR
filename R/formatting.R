@@ -126,7 +126,7 @@ PrintSampleTable <- function(input, cap){
         spread(key="lang",value="n",fill=0) 
     tab$n <- apply(tab,1,function(x){sum(as.integer(x[2:3]))})
     tab %>% mutate(cx=case_when(
-                             cx == "affekt" ~ "affektiivinen konstruktio",
+                             cx %in% c("aff","affekt") ~ "affektiivinen konstruktio",
                              cx == "alatop" ~ "alatopiikkikonstruktio",
                              cx == "anaf" ~ "anaforinen konstruktio",
                              cx == "kataf" ~ "kataforinen konstruktio",
@@ -137,22 +137,42 @@ PrintSampleTable <- function(input, cap){
                              cx == "ei-tempj" ~ "ei--temporaalinen jälkeen-konstruktio",
                              cx == "määrä" ~ "määrää painottava konstruktio",
                              cx == "adv" ~ "adverbinen konstruktio",
+                             cx == "adverbi" ~ "adverbinen konstruktio",
+                             cx == "mainostava" ~ "ilmoituksen aloittava konstruktio",
                              cx == "sekv" ~ "anaforinen konstruktio",
                              cx == "tiiv.anaf" ~ "Tiivistetty anaforinen konstruktio",
+                             cx == "top" ~   "topikaalinen konstruktio",
                              cx == "topik" ~ "topikaalinen konstruktio",
+                             cx == "ten" ~   "topikaalinen konstruktio",
                              cx == "johdanto" ~ "johdantokonstruktio",
-                             cx == "top" ~ "topikaalinen konstruktio",
+                             cx == "joskusjoskus" ~ "joskus--joskus-konstruktio",
+                             cx == "glob.johd" ~ "globaali johdantokonstruktio",
+                             cx == "glob.johd." ~ "globaali johdantokonstruktio",
+                             cx == "lok.johd" ~ "lokaali johdantokonstruktio",
+                             cx == "lok.johd." ~ "lokaali johdantokonstruktio",
                              cx == "fok" ~ "fokaalinen konstruktio",
                              cx == "rtu" ~ "johdantokonstruktio",
                              cx == "äkkiä" ~ "äkkiä-konstruktio",
                              TRUE ~ cx
-                             ))  %>% 
-        arrange(desc(n)) %>% 
-        add_row(cx="Yht.",fi=sum(.$fi),ru=sum(.$ru),n=sum(fi,ru)) %>% 
-        setNames(c("Konstruktio","n / suomi","n / venäjä", "Yht.")) %>% 
-        kable(booktabs=T,longtable=T,caption=cap) %>% 
-        kable_styling (full_width = T) %>%
-        row_spec(nrow(tab), hline_after = T) %>% 
-        column_spec(1, width="9cm")
+                             ))   -> temp
+    
+        if(input %>% filter(lang=="fi")  %>% nrow == 0){
+            temp <- temp %>% 
+                arrange(desc(ru))  %>% 
+                select(-n) %>% 
+                add_row(cx="Yht.",ru=sum(.$ru))  %>% 
+                setNames(c("Konstruktio","n / venäjä")) 
+        }
+        else{
+            temp <- temp %>% 
+                arrange(desc(n))  %>% 
+                add_row(cx="Yht.",fi=sum(.$fi),ru=sum(.$ru),n=sum(fi,ru))  %>% 
+                setNames(c("Konstruktio","n / suomi","n / venäjä", "Yht.")) 
+        }
+        temp %>% 
+            kable(booktabs=T,longtable=T,caption=cap) %>% 
+            kable_styling (full_width = T) %>%
+            row_spec(nrow(tab), hline_after = T) %>% 
+            column_spec(1, width="9cm")
 }
 
