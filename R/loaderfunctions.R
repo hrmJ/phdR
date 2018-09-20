@@ -180,6 +180,10 @@ FilterOut <- function(filtered){
         filtered <- filtered %>% filter(!(group=="LM1" & grepl("> [а-я]+ раз",sent)))
         #Poistetaan suomen L5a:sta ylimääräiset monikot ja "päivänä" -sana
         filtered <- filtered  %>% filter(!(lang=="fi" & group=="L5a" & !grepl("<vuonna",sent,ignore.case=T)))
+        #Poistetaan venäjän L9b:stä впервые
+        filtered <- filtered  %>% filter(!(lang=="ru" & group=="L9d" & grepl("впервые <с",sent,ignore.case=T)))
+        # Korjataan suomen E6b:stä pois pitkään aikaan ja pitkiin aikoihin
+        filtered <- filtered  %>% filter(!(lang=="fi" & group=="E6b" & grepl("(<aikaan|<aikoi|pitkään> aikaan|pitkään aikaan)",sent,ignore.case=T)))
 
 
     return(filtered)

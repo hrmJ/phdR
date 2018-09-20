@@ -23,7 +23,7 @@ GetD <- function(rawdata){
         select(ID, lang, group,funct,morph,location3,location,
                isnumeric, pos, ref, corpustype, subjtype, objtype,
                headverb, headverbfeat, subjpos, objpos,
-               firstpos, firsttoken, subjlength, subjlength2,
+               firstpos, firstlemma, firsttoken, subjlength, subjlength2,
                objlength,
                subjlemma, objlemma,
                clausestatus, sentid) %>% 

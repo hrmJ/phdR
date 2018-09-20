@@ -24,5 +24,6 @@ Imports:
     readr,
     reshape,
     stringi,
+    formattable,
     ggmcmc
 RoxygenNote: 6.0.1

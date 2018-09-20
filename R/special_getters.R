@@ -3,13 +3,13 @@
 #' filtteröitynä isosta d-dataframesta
 
 #' Hae adverbien osuus tietyssä sijainnissa
+#' @param x ryhmä, jonka osuuksia tarkastellaan
 #' @param lang kieli
 #' @param total dataframe, josta haetaan
 #' @param location sijainti, josta haetaan
 #' @export
 GetAdvShare  <- function(x, lang, total, location){
     share  <-  nrow(total[total$group==x&total$lang==lang&total$location3=="S2/S3",])/nrow(total[total$group==x&total$lang==lang,])
-    names(share) <- x
     return(share)
 } 
 

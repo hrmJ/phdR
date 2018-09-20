@@ -163,6 +163,13 @@ PrintSampleTable <- function(input, cap){
                 add_row(cx="Yht.",ru=sum(.$ru))  %>% 
                 setNames(c("Konstruktio","n / venäjä")) 
         }
+        else if(input %>% filter(lang=="ru")  %>% nrow == 0){
+            temp <- temp %>% 
+                arrange(desc(fi))  %>% 
+                select(-n) %>% 
+                add_row(cx="Yht.",fi=sum(.$fi))  %>% 
+                setNames(c("Konstruktio","n / suomi")) 
+        }
         else{
             temp <- temp %>% 
                 arrange(desc(n))  %>% 

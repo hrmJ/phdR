@@ -21,3 +21,15 @@ GetS1Means()
 GetNumericCasesInGroups()
 GetPatterns()
 
+
+#library(dplyr)
+#load("~/phd_data/data/sents.rda")
+#load("~/workprojects/phdR2/data/d.rda")
+#withsents <- d %>% left_join(sents,by=c("ID","lang"))
+#g <- "L2a"
+#l2 <- "fi"
+#thisloc <- "S1"
+#ss <- subset(withsents,lang==l2&group==g&location==thisloc)
+#collocates <- SimpleCollocations(ss$sent,pat,2)
+
+

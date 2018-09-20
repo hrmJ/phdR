@@ -10,6 +10,8 @@ Hae adverbien osuus tietyssä sijainnissa}
 GetAdvShare(x, lang, total, location)
 }
 \arguments{
+\item{x}{ryhmä, jonka osuuksia tarkastellaan}
+
 \item{lang}{kieli}
 
 \item{total}{dataframe, josta haetaan}
