@@ -184,6 +184,11 @@ FilterOut <- function(filtered){
         filtered <- filtered  %>% filter(!(lang=="ru" & group=="L9d" & grepl("впервые <с",sent,ignore.case=T)))
         # Korjataan suomen E6b:stä pois pitkään aikaan ja pitkiin aikoihin
         filtered <- filtered  %>% filter(!(lang=="fi" & group=="E6b" & grepl("(<aikaan|<aikoi|pitkään> aikaan|pitkään aikaan)",sent,ignore.case=T)))
+        # Korjataan suomen duratiivisista pois viettää ja kestää
+        filtered <- filtered  %>% filter(!(lang=="fi" & grepl("E",group) & headverb %in% c("viettää","kestää")))
+        # Korjataan E1a-ryhmistä tuntia viikossa tms.
+        filtered <- filtered  %>% filter(!(group=="E1a" & grepl("> (в|за) (недел|ден|год|сутках)",sent, ignore.case=T)))
+        filtered <- filtered  %>% filter(!(group=="E1a" & grepl("> (viikossa|vuodessa|päivässä)",sent, ignore.case=T)))
 
 
     return(filtered)
