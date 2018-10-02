@@ -189,6 +189,9 @@ FilterOut <- function(filtered){
         # Korjataan E1a-ryhmistä tuntia viikossa tms.
         filtered <- filtered  %>% filter(!(group=="E1a" & grepl("> (в|за) (недел|ден|год|сутках)",sent, ignore.case=T)))
         filtered <- filtered  %>% filter(!(group=="E1a" & grepl("> (viikossa|vuodessa|päivässä)",sent, ignore.case=T)))
+        # Korjataan venäjän E1a-ryhmistä каждые x лет ym.
+        filtered <- filtered  %>% filter(!(group=="E1a" & grepl("каждые [а-я]+ <",sent, ignore.case=T)))
+        
 
 
     return(filtered)
