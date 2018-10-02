@@ -117,7 +117,7 @@ PrintGroupTable <- function(g, fi, ru){
 #'
 #' @export
 
-PrintSampleTable <- function(input, cap){
+PrintSampleTable <- function(input, cap, just_data=F){
     if("cxg" %in% colnames(input)){
         input <- input %>% rename(cx=cxg)
     }
@@ -176,6 +176,10 @@ PrintSampleTable <- function(input, cap){
                 add_row(cx="Yht.",fi=sum(.$fi),ru=sum(.$ru),n=sum(fi,ru))  %>% 
                 setNames(c("Konstruktio","n / suomi","n / venäjä", "Yht.")) 
         }
+        if(just_data == T){
+            return (temp)
+        }
+        
         temp %>% 
             kable(booktabs=T,longtable=T,caption=cap) %>% 
             kable_styling (full_width = T) %>%

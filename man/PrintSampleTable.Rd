@@ -4,7 +4,7 @@
 \alias{PrintSampleTable}
 \title{Oikopolku satunnaisotantataulukoihin}
 \usage{
-PrintSampleTable(input, cap)
+PrintSampleTable(input, cap, just_data = F)
 }
 \arguments{
 \item{input}{syötteenä oleva tibble}
