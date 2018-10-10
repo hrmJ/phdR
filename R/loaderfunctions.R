@@ -178,8 +178,6 @@ FilterOut <- function(filtered){
                                                        grepl("впервые <за> ", sent,ignore.case=T)))
         #venäjän LM1-ryhmästä pois раз-sanat
         filtered <- filtered %>% filter(!(group=="LM1" & grepl("> [а-я]+ раз",sent)))
-        #Poistetaan suomen L5a:sta ylimääräiset monikot ja "päivänä" -sana
-        filtered <- filtered  %>% filter(!(lang=="fi" & group=="L5a" & !grepl("<vuonna",sent,ignore.case=T)))
         #Poistetaan venäjän L9b:stä впервые
         filtered <- filtered  %>% filter(!(lang=="ru" & group=="L9d" & grepl("впервые <с",sent,ignore.case=T)))
         # Korjataan suomen E6b:stä pois pitkään aikaan ja pitkiin aikoihin
@@ -235,7 +233,7 @@ FixVariables <- function(mydf){
     mydf$objpos[mydf$objpos!="pron"] <- "muu"
     mydf$morph[mydf$ref=="UT" & mydf$morph=="ADV"] <- "deict.ADV"
     mydf$morph[mydf$group=="L5b"] <- "deict.ADV"
-    #Nyt kun suomen L6b on myös adv..
+    #Nyt kun suomen E6b on myös adv..
     mydf$morph[mydf$group=="E6b"] <- "ADV"
 
     mydf$group[mydf$group=="L5b"] <- "L5c"
@@ -304,6 +302,10 @@ FixVariables <- function(mydf){
     #Radikaalisti simppelimpi:
     mydf$ref[mydf$ref %in% c("abs","TT","obj","subj")] <- 'muu'
 
+
+    #TÄMÄ filtteröinti siirretty vasta tänne, jotta L5a/L5b-jaottelu ehditty korjata
+    #Poistetaan suomen L5a:sta ylimääräiset monikot ja "päivänä" -sana
+    mydf <- mydf  %>% filter(!(lang=="fi" & group=="L5a" & !grepl("<vuonna",sent,ignore.case=T)))
 
     return(mydf)
 }
