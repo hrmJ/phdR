@@ -25,5 +25,7 @@ Imports:
     reshape,
     stringi,
     formattable,
-    ggmcmc
+    ggmcmc,
+    tidygraph,
+    ggraph
 RoxygenNote: 6.0.1
