@@ -13,19 +13,9 @@ LazyData: true
 Suggests: 
 Imports:
     bookdown,
-    coda,
     dplyr,
-    gdata,
     ggplot2,
-    ggrepel,
-    grid,
-    gridExtra,
     kableExtra,
     readr,
-    reshape,
     stringi,
-    formattable,
-    ggmcmc,
-    tidygraph,
-    ggraph
 RoxygenNote: 6.0.1
