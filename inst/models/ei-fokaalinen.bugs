@@ -1,0 +1,54 @@
+model{ 
+#LIKELIHOOD
+for (lang.idx in 1:Nlang){ for (locative_neighbour_and_press.idx in 1:Nlocative_neighbour_and_press){ 
+    observations[lang.idx, locative_neighbour_and_press.idx, 1:Nlocation3] ~ dmulti(probs[lang.idx, locative_neighbour_and_press.idx, 1:Nlocation3], totals[lang.idx, locative_neighbour_and_press.idx])
+    for (location3.idx in 1:Nlocation3){ 
+        probs[lang.idx, locative_neighbour_and_press.idx, location3.idx] <- phi[lang.idx, locative_neighbour_and_press.idx, location3.idx] / sum(phi[lang.idx, locative_neighbour_and_press.idx, 1:Nlocation3])
+        log(phi[lang.idx, locative_neighbour_and_press.idx, location3.idx]) <- location3[location3.idx] + lang[lang.idx, location3.idx] + locative_neighbour_and_press[locative_neighbour_and_press.idx, location3.idx] + lang.locative_neighbour_and_press[lang.idx, locative_neighbour_and_press.idx, location3.idx] 
+}
+}}
+#PRIORS
+sigma.location3 ~ dt(0,1,1) T(0,)
+tau.location3 <- pow(sigma.location3,-2)
+ 
+sigma.lang ~ dt(0,1,1) T(0,)
+tau.lang <- pow(sigma.lang,-2)
+ 
+sigma.locative_neighbour_and_press ~ dt(0,1,1) T(0,)
+tau.locative_neighbour_and_press <- pow(sigma.locative_neighbour_and_press,-2)
+ 
+sigma.lang.locative_neighbour_and_press ~ dt(0,1,1) T(0,)
+tau.lang.locative_neighbour_and_press <- pow(sigma.lang.locative_neighbour_and_press,-2)
+ 
+for (location3.idx in 1:Nlocation3){ 
+    location3[location3.idx] ~ dnorm(0, tau.location3)
+}
+ 
+for (location3.idx in 1:Nlocation3){ 
+    lang.raw[location3.idx] ~ dnorm(0, tau.lang)
+    lang[1, location3.idx] <- lang.raw[location3.idx] - mean(lang.raw[1:Nlocation3])
+    lang[2, location3.idx] <- -lang[1, location3.idx]
+ 
+    for (locative_neighbour_and_press.idx in 1:Nlocative_neighbour_and_press){ 
+        locative_neighbour_and_press.raw[locative_neighbour_and_press.idx, location3.idx] ~ dnorm(0, tau.locative_neighbour_and_press)
+        locative_neighbour_and_press[locative_neighbour_and_press.idx, location3.idx] <- 
+            locative_neighbour_and_press.raw[locative_neighbour_and_press.idx, location3.idx] 
+            - mean(locative_neighbour_and_press.raw[1:Nlocative_neighbour_and_press, location3.idx]) 
+            - mean(locative_neighbour_and_press.raw[locative_neighbour_and_press.idx, 1:Nlocation3]) 
+            + mean(locative_neighbour_and_press.raw[1:Nlocative_neighbour_and_press, 1:Nlocation3]) 
+        #INTERACTION
+        lang.locative_neighbour_and_press.raw[locative_neighbour_and_press.idx, location3.idx] ~ dnorm(0, tau.lang.locative_neighbour_and_press)
+        lang.locative_neighbour_and_press[1, locative_neighbour_and_press.idx, location3.idx] <- 
+            lang.locative_neighbour_and_press.raw[locative_neighbour_and_press.idx, location3.idx] 
+            - mean(lang.locative_neighbour_and_press.raw[1:Nlocative_neighbour_and_press, location3.idx]) 
+            - mean(lang.locative_neighbour_and_press.raw[locative_neighbour_and_press.idx, 1:Nlocation3]) 
+            + mean(lang.locative_neighbour_and_press.raw[1:Nlocative_neighbour_and_press, 1:Nlocation3]) 
+        lang.locative_neighbour_and_press[2,locative_neighbour_and_press.idx,location3.idx] <- -lang.locative_neighbour_and_press[1,locative_neighbour_and_press.idx,location3.idx]
+}
+}
+ 
+#STANDARD DEVIATIONS
+std.lang <- sd(lang[,])
+std.locative_neighbour_and_press <- sd(locative_neighbour_and_press[,])
+std.lang.locative_neighbour_and_press <- sd(lang.locative_neighbour_and_press[,,])
+}

@@ -1,0 +1,84 @@
+model{ 
+#LIKELIHOOD
+for (lang.idx in 1:Nlang){ for (hasPverb.idx in 1:NhasPverb){ for (subjtype.idx in 1:Nsubjtype){ for (corpustype.idx in 1:Ncorpustype){ 
+    observations[lang.idx, hasPverb.idx, subjtype.idx, corpustype.idx, 1:Nlocation3] ~ dmulti(probs[lang.idx, hasPverb.idx, subjtype.idx, corpustype.idx, 1:Nlocation3], totals[lang.idx, hasPverb.idx, subjtype.idx, corpustype.idx])
+    for (location3.idx in 1:Nlocation3){ 
+        probs[lang.idx, hasPverb.idx, subjtype.idx, corpustype.idx, location3.idx] <- phi[lang.idx, hasPverb.idx, subjtype.idx, corpustype.idx, location3.idx] / sum(phi[lang.idx, hasPverb.idx, subjtype.idx, corpustype.idx, 1:Nlocation3])
+        log(phi[lang.idx, hasPverb.idx, subjtype.idx, corpustype.idx, location3.idx]) <- location3[location3.idx] + lang[lang.idx, location3.idx] + hasPverb[hasPverb.idx, location3.idx] + lang.hasPverb[lang.idx, hasPverb.idx, location3.idx] + subjtype[subjtype.idx, location3.idx] + lang.subjtype[lang.idx, subjtype.idx, location3.idx] + corpustype[corpustype.idx, location3.idx] + lang.corpustype[lang.idx, corpustype.idx, location3.idx] 
+}
+}}}}
+#PRIORS
+sigma.location3 ~ dt(0,1,1) T(0,)
+tau.location3 <- pow(sigma.location3,-2)
+ 
+sigma.lang ~ dt(0,1,1) T(0,)
+tau.lang <- pow(sigma.lang,-2)
+ 
+sigma.hasPverb ~ dt(0,1,1) T(0,)
+tau.hasPverb <- pow(sigma.hasPverb,-2)
+ 
+sigma.lang.hasPverb ~ dt(0,1,1) T(0,)
+tau.lang.hasPverb <- pow(sigma.lang.hasPverb,-2)
+ 
+sigma.subjtype ~ dt(0,1,1) T(0,)
+tau.subjtype <- pow(sigma.subjtype,-2)
+ 
+sigma.lang.subjtype ~ dt(0,1,1) T(0,)
+tau.lang.subjtype <- pow(sigma.lang.subjtype,-2)
+ 
+sigma.corpustype ~ dt(0,1,1) T(0,)
+tau.corpustype <- pow(sigma.corpustype,-2)
+ 
+sigma.lang.corpustype ~ dt(0,1,1) T(0,)
+tau.lang.corpustype <- pow(sigma.lang.corpustype,-2)
+ 
+for (location3.idx in 1:Nlocation3){ 
+    location3[location3.idx] ~ dnorm(0, tau.location3)
+}
+ 
+for (location3.idx in 1:Nlocation3){ 
+    lang.raw[location3.idx] ~ dnorm(0, tau.lang)
+    lang[1, location3.idx] <- lang.raw[location3.idx] - mean(lang.raw[1:Nlocation3])
+    lang[2, location3.idx] <- -lang[1, location3.idx]
+ 
+    #A BINARY PREDICTOR:
+    hasPverb.raw[location3.idx] ~ dnorm(0, tau.hasPverb)
+    hasPverb[1, location3.idx] <- hasPverb.raw[location3.idx] - mean(hasPverb.raw[1:Nlocation3])
+    hasPverb[2, location3.idx] <- -hasPverb[1, location3.idx]
+ 
+    lang.hasPverb.raw[location3.idx] ~ dnorm(0, 0.001)
+    lang.hasPverb[1, 1, location3.idx] <- lang.hasPverb.raw[location3.idx] - mean(lang.hasPverb.raw[1:Nlocation3]) 
+    lang.hasPverb[1, 2, location3.idx] <- -lang.hasPverb[1,1,location3.idx]
+    lang.hasPverb[2, 1, location3.idx] <- -lang.hasPverb[1,1,location3.idx]
+    lang.hasPverb[2, 2, location3.idx] <- lang.hasPverb[1,1,location3.idx]
+    #A BINARY PREDICTOR:
+    subjtype.raw[location3.idx] ~ dnorm(0, tau.subjtype)
+    subjtype[1, location3.idx] <- subjtype.raw[location3.idx] - mean(subjtype.raw[1:Nlocation3])
+    subjtype[2, location3.idx] <- -subjtype[1, location3.idx]
+ 
+    lang.subjtype.raw[location3.idx] ~ dnorm(0, 0.001)
+    lang.subjtype[1, 1, location3.idx] <- lang.subjtype.raw[location3.idx] - mean(lang.subjtype.raw[1:Nlocation3]) 
+    lang.subjtype[1, 2, location3.idx] <- -lang.subjtype[1,1,location3.idx]
+    lang.subjtype[2, 1, location3.idx] <- -lang.subjtype[1,1,location3.idx]
+    lang.subjtype[2, 2, location3.idx] <- lang.subjtype[1,1,location3.idx]
+    #A BINARY PREDICTOR:
+    corpustype.raw[location3.idx] ~ dnorm(0, tau.corpustype)
+    corpustype[1, location3.idx] <- corpustype.raw[location3.idx] - mean(corpustype.raw[1:Nlocation3])
+    corpustype[2, location3.idx] <- -corpustype[1, location3.idx]
+ 
+    lang.corpustype.raw[location3.idx] ~ dnorm(0, 0.001)
+    lang.corpustype[1, 1, location3.idx] <- lang.corpustype.raw[location3.idx] - mean(lang.corpustype.raw[1:Nlocation3]) 
+    lang.corpustype[1, 2, location3.idx] <- -lang.corpustype[1,1,location3.idx]
+    lang.corpustype[2, 1, location3.idx] <- -lang.corpustype[1,1,location3.idx]
+    lang.corpustype[2, 2, location3.idx] <- lang.corpustype[1,1,location3.idx]
+}
+ 
+#STANDARD DEVIATIONS
+std.lang <- sd(lang[,])
+std.hasPverb <- sd(hasPverb[,])
+std.subjtype <- sd(subjtype[,])
+std.corpustype <- sd(corpustype[,])
+std.lang.hasPverb <- sd(lang.hasPverb[,,])
+std.lang.subjtype <- sd(lang.subjtype[,,])
+std.lang.corpustype <- sd(lang.corpustype[,,])
+}

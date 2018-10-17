@@ -1,0 +1,54 @@
+model{ 
+#LIKELIHOOD
+for (lang.idx in 1:Nlang){ for (group.idx in 1:Ngroup){ 
+    observations[lang.idx, group.idx, 1:Nlocation3] ~ dmulti(probs[lang.idx, group.idx, 1:Nlocation3], totals[lang.idx, group.idx])
+    for (location3.idx in 1:Nlocation3){ 
+        probs[lang.idx, group.idx, location3.idx] <- phi[lang.idx, group.idx, location3.idx] / sum(phi[lang.idx, group.idx, 1:Nlocation3])
+        log(phi[lang.idx, group.idx, location3.idx]) <- location3[location3.idx] + lang[lang.idx, location3.idx] + group[group.idx, location3.idx] + lang.group[lang.idx, group.idx, location3.idx] 
+}
+}}
+#PRIORS
+sigma.location3 ~ dt(0,1,1) T(0,)
+tau.location3 <- pow(sigma.location3,-2)
+ 
+sigma.lang ~ dt(0,1,1) T(0,)
+tau.lang <- pow(sigma.lang,-2)
+ 
+sigma.group ~ dt(0,1,1) T(0,)
+tau.group <- pow(sigma.group,-2)
+ 
+sigma.lang.group ~ dt(0,1,1) T(0,)
+tau.lang.group <- pow(sigma.lang.group,-2)
+ 
+for (location3.idx in 1:Nlocation3){ 
+    location3[location3.idx] ~ dnorm(0, tau.location3)
+}
+ 
+for (location3.idx in 1:Nlocation3){ 
+    lang.raw[location3.idx] ~ dnorm(0, tau.lang)
+    lang[1, location3.idx] <- lang.raw[location3.idx] - mean(lang.raw[1:Nlocation3])
+    lang[2, location3.idx] <- -lang[1, location3.idx]
+ 
+    for (group.idx in 1:Ngroup){ 
+        group.raw[group.idx, location3.idx] ~ dnorm(0, tau.group)
+        group[group.idx, location3.idx] <- 
+            group.raw[group.idx, location3.idx] 
+            - mean(group.raw[1:Ngroup, location3.idx]) 
+            - mean(group.raw[group.idx, 1:Nlocation3]) 
+            + mean(group.raw[1:Ngroup, 1:Nlocation3]) 
+        #INTERACTION
+        lang.group.raw[group.idx, location3.idx] ~ dnorm(0, tau.lang.group)
+        lang.group[1, group.idx, location3.idx] <- 
+            lang.group.raw[group.idx, location3.idx] 
+            - mean(lang.group.raw[1:Ngroup, location3.idx]) 
+            - mean(lang.group.raw[group.idx, 1:Nlocation3]) 
+            + mean(lang.group.raw[1:Ngroup, 1:Nlocation3]) 
+        lang.group[2,group.idx,location3.idx] <- -lang.group[1,group.idx,location3.idx]
+}
+}
+ 
+#STANDARD DEVIATIONS
+std.lang <- sd(lang[,])
+std.group <- sd(group[,])
+std.lang.group <- sd(lang.group[,,])
+}
