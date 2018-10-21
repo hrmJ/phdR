@@ -68,18 +68,24 @@ PrepareOrderedDifPlot <- function(subsetted, loc, dif.treshold, langs, percentua
     plotted.s1a <- plotted.s1a %>% 
         left_join(nvals,by=c("group","lang"))  %>% 
         mutate(group=factor(group,levels=unique(group))) %>% 
-        arrange(group)  
+        arrange(group)   %>% 
+        mutate(kieli=case_when(lang=="ru"~"venäjä",T~"suomi"))
 
-    pl  <- ggplot(plotted.s1a,aes(x=group, y=value, fill=lang)) +
+    pl  <- ggplot(plotted.s1a,aes(x=group, y=value, fill=kieli)) +
         geom_bar(stat="identity", position=position_dodge(width=.5),width=.4) +
-        geom_text(aes(label=paste0(ns1, " / ", nall, " kpl"),vjust=-0.2),size=2) + 
+        geom_text(aes(label=paste0(ns1, " / ", nall)),size=1.6,angle=90, hjust=-0.1, position=position_dodge(width=.5)) + 
         theme_bw() + scale_fill_grey(start = 0.3, end = .7) +
         coord_cartesian(ylim = c(0,1)) +
         scale_y_continuous(labels = percent) +
         #coord_flip() + 
         theme(panel.grid.major = element_blank(), 
               panel.grid.minor = element_blank(),
-              panel.background = element_blank())
+              panel.background = element_blank(),
+              axis.title=element_text(size=7),
+              axis.text=element_text(size=6)
+              ) 
+
+
 
     if(hasArg(means)){
         pl  <- pl +

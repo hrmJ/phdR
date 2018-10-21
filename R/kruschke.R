@@ -86,6 +86,8 @@ saveGraph = function( file="saveGraphOutput" , type="pdf" , ... ) {
 #------------------------------------------------------------------------------
 # Functions for computing limits of HDI's:
 
+#' @export
+
 HDIofMCMC = function( sampleVec , credMass=0.95 ) {
   # Computes highest density interval from a sample of representative values,
   #   estimated as shortest credible interval.
@@ -326,6 +328,7 @@ plotPost = function( paramSampleVec , cenTend=c("mode","median","mean")[1] ,
                      xlab=NULL , xlim=NULL , yaxt=NULL , ylab=NULL , 
                      main=NULL , cex=NULL , cex.lab=NULL ,
                      col=NULL , border=NULL , showCurve=FALSE , breaks=NULL , 
+                     di50=F,
                      ... ) {
   # Override defaults of hist function, if not specified by user:
   # (additional arguments "..." are passed to the hist function)
@@ -449,6 +452,10 @@ plotPost = function( paramSampleVec , cenTend=c("mode","median","mean")[1] ,
   }
   # Display the HDI.
   lines( HDI , c(0,0) , lwd=4 , lend=1 )
+  if(di50 == T){
+    l50 = HDIofMCMC(paramSampleVec, 0.5 )
+    lines(l50 , c(0,0) , lwd=20 , lend=1 )
+  }
   text( mean(HDI) , 0 , bquote(.(100*credMass) * "% HDI" ) ,
         adj=c(.5,-1.7) , cex=cex )
   text( HDI[1] , 0 , bquote(.(signif(HDI[1],3))) ,

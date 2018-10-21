@@ -21,11 +21,19 @@ fn <- function(n,numbers=2){
 #' @export
 
 PrintLocationTableWithCounts <- function(sourcetibble, col1, col2, cap){
+    mutated <- sourcetibble
+
+    if(col1=="lang"){
+        mutated <- sourcetibble  %>% mutate(lang=case_when(lang=="ru"~"venäjä",T~"suomi"))
+    }
+
     props <- round(prop.table(
-                              xtabs(~sourcetibble[[col1]] + sourcetibble[[col2]]),
+                              xtabs(~mutated[[col1]] + mutated[[col2]]),
                               1) * 100,2)  %>%  as_tibble
     colnames(props) <- c(col1,col2,"n")
-    sourcetibble %>% 
+
+
+    mutated %>% 
         group_by_(col1,col2)  %>% count_(col1)  %>% 
         left_join(.,props,by=c(col1,col2)) %>% 
         mutate(n=paste0(paste0(format(n.y,decimal.mark=",")," %"),
@@ -35,8 +43,9 @@ PrintLocationTableWithCounts <- function(sourcetibble, col1, col2, cap){
         t  %>% 
         `colnames<-`(.[1,]) %>% 
         .[-1,]  %>% 
-        kable(.,caption=cap, longtable=T, booktabs=T) %>% 
-        kable_styling (full_width = T)
+        kable(.,caption=cap,  booktabs=T) %>% 
+        kable_styling (latex_options=c("HOLD_position"), full_width = T) 
+
 }
 
 
@@ -66,7 +75,7 @@ PrintCompTable <- function(tabs, cnames, gheadings, cap){
         right_join(tabs[[2]], by="rank")  %>% 
         select(-rank) %>% 
         setNames(rep(cnames,2)) %>% 
-        kable(booktabs=T,longtable=T, caption=cap) %>% 
+        kable(booktabs=T,  caption=cap) %>% 
         add_header_above(gheadings) %>% 
         column_spec(3, border_right=T) %>% 
         kable_styling (full_width = T)
@@ -96,12 +105,14 @@ PrintGroupTable <- function(g, fi, ru){
 
     cap <- paste0(gtext1, gtext2, " kuuluvat ilmaukset suomessa ja venäjässä.")
 
+
+
     cbind(g, fi, ru) %>% 
         as_tibble %>% 
         setNames(c("Koodi", "suomi", "venäjä")) %>% 
-        kable(booktabs=T,longtable=T, caption=cap) %>% 
-        kable_styling(full_width=T)  %>% 
-        column_spec(1, width="1.2cm") 
+        kable(booktabs=T,  caption=cap) %>% 
+        kable_styling(latex_options=c("HOLD_position"), full_width=T)  %>% 
+        column_spec(1, width="1.2cm")  
 }
 
 
@@ -115,6 +126,7 @@ PrintGroupTable <- function(g, fi, ru){
 #' @param input syötteenä oleva tibble
 #' @param cap taulukon otsikko
 #'
+#' @export
 #' @export
 
 PrintSampleTable <- function(input, cap, just_data=F){
@@ -131,6 +143,8 @@ PrintSampleTable <- function(input, cap, just_data=F){
                              cx == "anaf" ~ "anaforinen konstruktio",
                              cx == "kataf" ~ "kataforinen konstruktio",
                              cx == "muu" ~ "ei luokiteltavissa",
+                             cx == "durpaikka" ~ "duratiivi + paikka -konstruktio",
+                             cx == "tiivhist" ~ "tiivistetty historia -konstruktio",
                              cx == "kontr" ~ "kontrastiivinen konstruktio",
                              cx == "ei-temp" ~ "ei--temporaalinen вдруг-konstruktio",
                              cx == "ei-temps" ~ "ei--temporaalinen silloin-konstruktio",
@@ -180,10 +194,13 @@ PrintSampleTable <- function(input, cap, just_data=F){
             return (temp)
         }
         
+
         temp %>% 
-            kable(booktabs=T,longtable=T,caption=cap) %>% 
-            kable_styling (full_width = T) %>%
+            kable(booktabs=T, caption=cap) %>% 
+            kable_styling (latex_options=c("HOLD_position"), full_width = T) %>%
             row_spec(nrow(tab), hline_after = T) %>% 
-            column_spec(1, width="9cm")
+            column_spec(1, width="9cm")  %>% 
+            gsub("\\\\addlinespace","", .)
+
 }
 

@@ -92,6 +92,24 @@ BuildAccuracyTest <- function(alldata, sample_size){
 #' @importFrom readr write_lines
 #' 
 #' @export
+#' @examples
+#' 
+#' # Example 1
+#' 
+#' # example of how a random sample can be obtained with dplyr
+#' 
+#' if(!exists("e3bsamps4")){
+#'     e3bsamps4 <- ws %>% 
+#'         filter(group=="E3b",location=="S4") %>% 
+#'         group_by(lang) %>% 
+#'         sample_n(getOption("sampsize"))  %>% 
+#'         ungroup
+#'     e3bsamps4 <- e3bsamps4 %>% sample_n(nrow(.))
+#'     e3bsamps4$cx <- pbapply(e3bsamps4, 1, CheckSample_df, cols_to_show=c("sourcetext","sent"))
+#'     save(e3bsamps4,file="~/workprojects/phdR2/data/e3bsamps4.rda")
+#' }
+#' 
+#' 
 
 CheckSample_df <- function(r, cols_to_show, backup_file="/home/juho/drive/backups/backup_for_checksample.txt"){
     content  <- sapply(r[cols_to_show],function(x) paste(strwrap(x, 79),collapse="\n"))

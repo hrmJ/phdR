@@ -33,11 +33,12 @@ setMethod("PrintTab", "PragmaticAssertionTab",
                 }
                 matr <-as.data.frame(matrix(m.data, byrow=T,ncol=2))
                 matr.out  <- data.frame("lause"=m.rownames,"olettama"=matr[,1],"väittämä"=matr[,2])
-                matr.out %>%
-                    kable(caption=object@caption, longtable=T, booktabs=T) %>% 
-                    kable_styling (latex_options = "striped",full_width = T)
-                    #column_spec(1, italic=T)
 
+
+                matr.out %>%
+                    kable(caption=object@caption,  booktabs=T) %>% 
+                    kable_styling (latex_options = c("striped","HOLD_position"),full_width = T) 
+                    #column_spec(1, italic=T)
             }
 )
 

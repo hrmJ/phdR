@@ -23,6 +23,8 @@ GetGroupMetaTab <- function(gnames){
     else{
         cap <- paste0("Ryhmän ", gnames[1], cap_ending)
     }
+
+
     groupmeta %>% filter(group %in% gnames) %>% 
         mutate(ref=case_when(ref=="UT" ~ "deikt.", ref == "anaf" ~ "anafor.", TRUE ~ ref)) %>% 
         mutate(funct = paste(substr(group,1,1),funct,sep="/")) %>% 
@@ -34,9 +36,10 @@ GetGroupMetaTab <- function(gnames){
                `n/ru`,
                #`Morfologinen rakenne`=morph,
                ) %>%
-        kable(caption=cap, longtable=T, booktabs=T)  %>% 
-        kable_styling (full_width = T) %>% 
-        column_spec(1, width="1.2cm") 
+        kable(caption=cap,  booktabs=T)  %>% 
+        kable_styling(latex_options=c("HOLD_position"),full_width = T) %>% 
+        column_spec(1, width="1.2cm")  
+
 
 }
 
